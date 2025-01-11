@@ -115,6 +115,7 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("suggest", handle_suggest))
     app.add_handler(CommandHandler("start", handle_start))
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
+    app.add_handler(MessageHandler(filters.TEXT, log_chat_id))
     app.add_handler(MessageHandler(filters.TEXT & filters.REPLY & filters.Chat(OWNER_CHAT_ID), handle_reply))
 
     print("Bot is running...")
