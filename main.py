@@ -39,6 +39,7 @@ async def handle_suggest(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     global homework
     text = update.message.text.lower()
+    print(update.effective_chat.id)
 
     user_username = update.effective_user.username if update.effective_user.username else str(update.effective_user.id)
 
