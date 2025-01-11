@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTyp
 SECRET_PASSWORD_HOMEWORK = "key46427"
 SECRET_PASSWORD_SEND = "key57773"
 OWNER_CHAT_ID = 1364250523
-BIT_GROUP_ID = -4703409969
+BIT_GROUP_ID = -1002462800651
 homework = "ما عدنه شي..."
 
 
@@ -69,7 +69,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await update.message.reply_text("اكتب الرساله التي تريد ارسالها الى كروب الدفعه...👻")
         context.user_data["awaiting_send"] = True
     elif update.message.chat.type == "private" and context.user_data.get("awaiting_send", False):
-        if text == "OFF":
+        if update.message.text == "OFF":
             context.user_data["awaiting_send"] = False
             await update.message.reply_text("تم تعطيل الامر...💯")
         else:
