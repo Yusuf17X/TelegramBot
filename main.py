@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTyp
 SECRET_PASSWORD_HOMEWORK = "key46427"
 SECRET_PASSWORD_SEND = "key57773"
 OWNER_CHAT_ID = 1364250523
-BIT_GROUP_ID = False
+BIT_GROUP_ID = -4703409969
 homework = "ما عدنه شي..."
 
 
@@ -39,6 +39,7 @@ async def handle_suggest(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     global homework
     text = update.message.text.lower()
+    print(update.effective_chat.id)
 
     user_username = update.effective_user.username if update.effective_user.username else str(update.effective_user.id)
 
@@ -64,19 +65,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         homework = update.message.text
         context.user_data["awaiting_homework"] = False
         await update.message.reply_text("تم تحديث الواجبات.. 😊")
-    elif update.effective_user.id == OWNER_CHAT_ID:
-        if SECRET_PASSWORD_SEND.lower() in text and update.message.chat.type == "private":
-            await update.message.reply_text("اكتب الرساله التي تريد ارسالها الى كروب الدفعه...👻")
-            context.user_data["awaiting_send"] = True
+    elif text == SECRET_PASSWORD_SEND.lower() and update.message.chat.type == "private":
+        await update.message.reply_text("اكتب الرساله التي تريد ارسالها الى كروب الدفعه...👻")
+        context.user_data["awaiting_send"] = True
     elif update.message.chat.type == "private" and context.user_data.get("awaiting_send", False):
-        if "OFF" in text:
+        if text == "OFF":
             context.user_data["awaiting_send"] = False
             await update.message.reply_text("تم تعطيل الامر...💯")
         else:
             global_message = update.message.text
+            context.user_data["awaiting_send"] = False
             await context.bot.send_message(chat_id=BIT_GROUP_ID, text=global_message)
             await update.message.reply_text("تم ارسال الرسالة...✅")
-            context.user_data["awaiting_send"] = False
     elif update.message.chat.type == "private":
         if not text.startswith("/"):
             await update.message.reply_text("ما افهم المكتوب...\n استخدم وحده من الاوامر او الكلمات الموجودة مسبقا..")
@@ -99,13 +99,6 @@ async def handle_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             await context.bot.send_message(chat_id=OWNER_CHAT_ID, text="Could not extract a valid username.")
     else:
         await context.bot.send_message(chat_id=OWNER_CHAT_ID, text="No valid reply_to_message or message format is incorrect.")
-
-async def log_chat_id(update, context):
-    chat_id = update.effective_chat.id
-    chat_name = update.effective_chat.title or update.effective_chat.username
-    message = f"Chat ID: {chat_id}\nChat Name: {chat_name}"
-
-    await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=message)
 
 
 if __name__ == "__main__":
