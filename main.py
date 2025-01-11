@@ -39,7 +39,6 @@ async def handle_suggest(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     global homework
     text = update.message.text.lower()
-    print(update.effective_chat.id)
 
     user_username = update.effective_user.username if update.effective_user.username else str(update.effective_user.id)
 
@@ -105,7 +104,6 @@ async def log_chat_id(update, context):
     chat_id = update.effective_chat.id
     chat_name = update.effective_chat.title or update.effective_chat.username
     message = f"Chat ID: {chat_id}\nChat Name: {chat_name}"
-    print(message)
 
     await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=message)
 
@@ -117,7 +115,6 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("suggest", handle_suggest))
     app.add_handler(CommandHandler("start", handle_start))
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
-    app.add_handler(MessageHandler(filters.TEXT, log_chat_id))
     app.add_handler(MessageHandler(filters.TEXT & filters.REPLY & filters.Chat(OWNER_CHAT_ID), handle_reply))
 
     print("Bot is running...")
