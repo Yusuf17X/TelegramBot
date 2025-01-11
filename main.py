@@ -104,6 +104,7 @@ async def log_chat_id(update, context):
     chat_id = update.effective_chat.id
     chat_name = update.effective_chat.title or update.effective_chat.username
     message = f"Chat ID: {chat_id}\nChat Name: {chat_name}"
+    print(message)
 
     await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=message)
 
